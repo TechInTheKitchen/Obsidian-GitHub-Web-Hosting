@@ -5,7 +5,7 @@ A small static reader that publishes Markdown and PDF files directly from a GitH
 No HTML export is required when notes change. The only generated file is `assets/content-manifest.json`, which supplies the navigation tree.
 
 > [!NOTE] GitHub Sites
-> You can view this template site at https://TechInTheKitchen.github.io/Obsidian-GitHub-Web-Hosting/
+> You copy this template site at https://github.com/TechInTheKitchen/Obsidian-GitHub-Web-Hosting
 
 ## Quick Start
 
