@@ -20,7 +20,7 @@
   }
 
   function prepareMarkdown(markdown) {
-    const callouts = markdown.replace(/^(\s*>\s*)\[!([a-z][a-z0-9_-]*)\][+-]?\s*(.*)$/gim, (_, quote, type, title) => `${quote}[!${type.toUpperCase()}] ${title.trim()}\n${quote.trimEnd()}`);
+    const callouts = markdown.replace(/^([ \t]*>[ \t]*)\[!([a-z][a-z0-9_-]*)\]([+-]?)[ \t]*(.*)$/gim, (_, quote, type, fold, title) => `${quote}[!${type.toUpperCase()}]${fold} ${title.trim()}\n${quote.trimEnd()}`);
     const embeds = callouts.replace(/!\[\[([^\]|#]+)(?:\|([^\]]+))?\]\]/g, (_, target, label) => {
       const source=target.trim();
       if(!mediaPattern.test(source))return label?.trim()||source;
@@ -85,12 +85,19 @@
     const supported=new Set(["note","tip","important","warning","caution"]);
     root.querySelectorAll("blockquote").forEach(block => {
       const marker=block.firstElementChild; if(!marker || marker.tagName!=="P")return;
-      const match=marker.textContent.trim().match(/^\[!([A-Z][A-Z0-9_-]*)\]\s*(.*)$/i); if(!match)return;
-      const type=match[1].toLowerCase(); const title=match[2].trim() || type.replace(/[-_]+/g," ").replace(/^./,c=>c.toUpperCase());
-      const heading=document.createElement("div"); heading.className="callout-title"; heading.textContent=title; marker.remove();
+      const match=marker.textContent.trim().match(/^\[!([A-Z][A-Z0-9_-]*)\]([+-]?)\s*(.*)$/i); if(!match)return;
+      const type=match[1].toLowerCase(); const fold=match[2]; const title=match[3].trim() || type.replace(/[-_]+/g," ").replace(/^./,c=>c.toUpperCase());
+      const heading=document.createElement(fold?"summary":"div"); heading.className="callout-title"; heading.textContent=title; marker.remove();
       const body=block.nextElementSibling;
       if(body?.tagName==="BLOCKQUOTE"&&!/^\[![A-Z]/i.test(body.textContent.trim())){while(body.firstChild)block.append(body.firstChild);body.remove();}
-      block.classList.add("callout",`callout-${supported.has(type)?type:"note"}`); block.prepend(heading);
+      let callout=block;
+      if(fold){
+        callout=document.createElement("details");callout.open=fold==="+";
+        const content=document.createElement("div");content.className="callout-content";
+        while(block.firstChild)content.append(block.firstChild);
+        callout.append(content);block.replaceWith(callout);
+      }
+      callout.classList.add("callout",`callout-${supported.has(type)?type:"note"}`); callout.prepend(heading);
     });
   }
 
