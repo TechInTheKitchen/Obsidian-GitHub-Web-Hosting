@@ -1,11 +1,11 @@
 {
-  "siteTitle": "Remedial Magic",
-  "siteSubtitle": "Welcome to Pengorgon's Remedial Institute for Summer Magical Studies",
-  "homeDocument": "Remedial Magic.md",
-  "loadingText": "Visiting the Library…",
-  "sidebarNote": "A brighter future through adequate supervision.",
+  "siteTitle": "My Obsidian Vault",
+  "siteSubtitle": "Published notes",
+  "homeDocument": "Home.md",
+  "loadingText": "Opening document…",
+  "sidebarNote": "Notes are loaded directly from the Markdown files in this repository.",
   "icon": "assets/images/site-icon.svg",
-  "themeStorageKey": "prisms-handbook",
+  "themeStorageKey": "obsidian-reader-theme",
   "excludedFiles": ["Private Notes.md", ".gitignore", ".nojekyll", "LICENSE"],
   "excludedFolders": [".git", ".github", ".obsidian", "tools", "assets"],
   "attributions": []
